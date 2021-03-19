@@ -64,11 +64,11 @@ window.findNQueensSolution = function(n) {
         }
       }
       if (count === n) {
-        solution.push(board.rows());
-        return;
+        solution = _.map(board.rows(), function (rows) {
+          return rows.slice();
+        });
       }
     } else {
-      //toggle on and recurse then toggle off to make trees for each position being toggled
       for (var col = 0; col < n; col++) {
 
         board.togglePiece(row, col);
@@ -83,13 +83,14 @@ window.findNQueensSolution = function(n) {
       }
     }
   };
+  if (n === 2 || n === 3) {
+    return board.rows();
+  }
+
   checkQueens();
 
-  if (solution[0] === undefined) {
-    solution[0] = board.rows();
-  }
-  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution[0]));
-  return solution[0];
+  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
+  return solution;
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
@@ -120,6 +121,7 @@ window.countNQueensSolutions = function(n) {
       }
     }
   };
+
   checkQueens();
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
